@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WUTaxRatePickerTableViewCell : UIPickerView
+@class WUPickerTableViewCell;
+
+@interface WUPickerTableViewCell : UITableViewCell {
+    UIToolbar *inputAccessoryView;
+}
+
+@property (nonatomic, strong) UIPickerView *picker;
 
 @end

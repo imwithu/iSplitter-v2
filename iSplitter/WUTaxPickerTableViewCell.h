@@ -8,6 +8,21 @@
 
 #import "WUPickerTableViewCell.h"
 
-@interface WUTaxPickerTableViewCell : WUPickerTableViewCell
+@class WUTaxPickerTableViewCell;
+
+@protocol WUTaxPickerTableViewCellDelegate <NSObject>
+
+-(void)taxCell:(WUTaxPickerTableViewCell *)cell didEndEditingWithInteger:(NSString*)integerPart decimal:(NSString *)decimalPart;
+
+@end
+
+@interface WUTaxPickerTableViewCell : WUPickerTableViewCell <UIPickerViewDataSource, UIPickerViewDelegate> {
+    NSString *integerPart;
+    NSString *decimalPart;
+}
+
+@property (nonatomic, strong) NSString *integerPart;
+@property (nonatomic, strong) NSString *decimalPart;
+@property (nonatomic, weak) IBOutlet id <WUTaxPickerTableViewCellDelegate> delegate;
 
 @end

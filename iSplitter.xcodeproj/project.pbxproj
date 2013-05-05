@@ -17,7 +17,10 @@
 		1ADEC47F17338306005B3384 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1ADEC47E17338306005B3384 /* Default@2x.png */; };
 		1ADEC48117338306005B3384 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1ADEC48017338306005B3384 /* Default-568h@2x.png */; };
 		1ADEC48417338306005B3384 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1ADEC48217338306005B3384 /* MainStoryboard.storyboard */; };
-		1ADEC48717338306005B3384 /* WUViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ADEC48617338306005B3384 /* WUViewController.m */; };
+		1ADEC492173383E9005B3384 /* WUMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ADEC491173383E9005B3384 /* WUMainViewController.m */; };
+		1ADEC4A51734E79A005B3384 /* WUPickerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ADEC4A41734E79A005B3384 /* WUPickerTableViewCell.m */; };
+		1ADEC4A81734EEA2005B3384 /* WUTaxPickerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ADEC4A71734EEA2005B3384 /* WUTaxPickerTableViewCell.m */; };
+		1ADEC4AE17362D04005B3384 /* WUTipPickerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ADEC4AD17362D04005B3384 /* WUTipPickerTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,8 +38,14 @@
 		1ADEC47E17338306005B3384 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		1ADEC48017338306005B3384 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		1ADEC48317338306005B3384 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		1ADEC48517338306005B3384 /* WUViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WUViewController.h; sourceTree = "<group>"; };
-		1ADEC48617338306005B3384 /* WUViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WUViewController.m; sourceTree = "<group>"; };
+		1ADEC490173383E9005B3384 /* WUMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WUMainViewController.h; sourceTree = "<group>"; };
+		1ADEC491173383E9005B3384 /* WUMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WUMainViewController.m; sourceTree = "<group>"; };
+		1ADEC4A31734E79A005B3384 /* WUPickerTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WUPickerTableViewCell.h; sourceTree = "<group>"; };
+		1ADEC4A41734E79A005B3384 /* WUPickerTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WUPickerTableViewCell.m; sourceTree = "<group>"; };
+		1ADEC4A61734EEA2005B3384 /* WUTaxPickerTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WUTaxPickerTableViewCell.h; sourceTree = "<group>"; };
+		1ADEC4A71734EEA2005B3384 /* WUTaxPickerTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WUTaxPickerTableViewCell.m; sourceTree = "<group>"; };
+		1ADEC4AC17362D04005B3384 /* WUTipPickerTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WUTipPickerTableViewCell.h; sourceTree = "<group>"; };
+		1ADEC4AD17362D04005B3384 /* WUTipPickerTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WUTipPickerTableViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +66,7 @@
 			isa = PBXGroup;
 			children = (
 				1ADEC47017338306005B3384 /* iSplitter */,
+				1ADEC47117338306005B3384 /* Supporting Files */,
 				1ADEC46917338306005B3384 /* Frameworks */,
 				1ADEC46817338306005B3384 /* Products */,
 			);
@@ -86,9 +96,14 @@
 				1ADEC47917338306005B3384 /* WUAppDelegate.h */,
 				1ADEC47A17338306005B3384 /* WUAppDelegate.m */,
 				1ADEC48217338306005B3384 /* MainStoryboard.storyboard */,
-				1ADEC48517338306005B3384 /* WUViewController.h */,
-				1ADEC48617338306005B3384 /* WUViewController.m */,
-				1ADEC47117338306005B3384 /* Supporting Files */,
+				1ADEC490173383E9005B3384 /* WUMainViewController.h */,
+				1ADEC491173383E9005B3384 /* WUMainViewController.m */,
+				1ADEC4A31734E79A005B3384 /* WUPickerTableViewCell.h */,
+				1ADEC4A41734E79A005B3384 /* WUPickerTableViewCell.m */,
+				1ADEC4A61734EEA2005B3384 /* WUTaxPickerTableViewCell.h */,
+				1ADEC4A71734EEA2005B3384 /* WUTaxPickerTableViewCell.m */,
+				1ADEC4AC17362D04005B3384 /* WUTipPickerTableViewCell.h */,
+				1ADEC4AD17362D04005B3384 /* WUTipPickerTableViewCell.m */,
 			);
 			path = iSplitter;
 			sourceTree = "<group>";
@@ -105,6 +120,7 @@
 				1ADEC48017338306005B3384 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			path = iSplitter;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -176,7 +192,10 @@
 			files = (
 				1ADEC47717338306005B3384 /* main.m in Sources */,
 				1ADEC47B17338306005B3384 /* WUAppDelegate.m in Sources */,
-				1ADEC48717338306005B3384 /* WUViewController.m in Sources */,
+				1ADEC492173383E9005B3384 /* WUMainViewController.m in Sources */,
+				1ADEC4A51734E79A005B3384 /* WUPickerTableViewCell.m in Sources */,
+				1ADEC4A81734EEA2005B3384 /* WUTaxPickerTableViewCell.m in Sources */,
+				1ADEC4AE17362D04005B3384 /* WUTipPickerTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -227,7 +246,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -251,7 +270,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -264,6 +283,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iSplitter/iSplitter-Prefix.pch";
 				INFOPLIST_FILE = "iSplitter/iSplitter-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -275,6 +295,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iSplitter/iSplitter-Prefix.pch";
 				INFOPLIST_FILE = "iSplitter/iSplitter-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -299,6 +320,7 @@
 				1ADEC48C17338306005B3384 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

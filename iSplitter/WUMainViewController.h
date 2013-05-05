@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WUTaxPickerTableViewCell.h"
+#import "WUTipPickerTableViewCell.h"
 
-@interface WUMainViewController : UITableViewController
+@interface WUMainViewController : UITableViewController <WUTaxPickerTableViewCellDelegate, WUTipPickerTableViewCellDelegate>
 
 @end
