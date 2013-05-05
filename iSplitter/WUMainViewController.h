@@ -1,5 +1,5 @@
 //
-//  WUViewController.h
+//  WUMainViewController.h
 //  iSplitter
 //
 //  Created by James Yu on 5/2/13.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WUViewController : UIViewController
+@interface WUMainViewController : UITableViewController
 
 @end
