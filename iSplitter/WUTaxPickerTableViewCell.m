@@ -74,7 +74,11 @@ __strong NSArray *decimalValues = nil;
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
     if (component == 1) {
-        return [integerValues objectAtIndex:row];
+        if (row < 10) {
+            return [NSString stringWithFormat:@"%3d",[[integerValues objectAtIndex:row] intValue]];
+        } else {
+            return [integerValues objectAtIndex:row];
+        }
     } else if (component == 2) {
         return [NSString stringWithFormat:@".%@ %%", [decimalValues objectAtIndex:row]];
     }

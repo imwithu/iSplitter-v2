@@ -12,7 +12,7 @@
 
 @protocol WUTipPickerTableViewCellDelegate <NSObject>
 
--(void)tipCell:(WUTipPickerTableViewCell *)cell didEndEditingFromMinimum:(NSString*)tipRateMin toMaximum:(NSString *)tipRateMax;
+- (void)tipCell:(WUTipPickerTableViewCell *)cell didEndEditingFromMinimum:(NSString*)tipRateMin toMaximum:(NSString *)tipRateMax;
 
 @end
 

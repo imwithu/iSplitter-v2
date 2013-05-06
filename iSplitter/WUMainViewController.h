@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WUNumberKeyboardTableViewCell.h"
 #import "WUTaxPickerTableViewCell.h"
 #import "WUTipPickerTableViewCell.h"
+#import "WUGuestRoundPickerTableViewCell.h"
 
-@interface WUMainViewController : UITableViewController <WUTaxPickerTableViewCellDelegate, WUTipPickerTableViewCellDelegate>
+@interface WUMainViewController : UITableViewController <WUNumberKeyboardTableViewCellDelegate, WUTaxPickerTableViewCellDelegate, WUTipPickerTableViewCellDelegate, WUGuestRoundPickerTableViewCellDelegate>
 
 @end

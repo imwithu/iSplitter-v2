@@ -12,13 +12,6 @@
 
 @synthesize picker;
 
-- (void)initializeInputView
-{
-	self.picker = [[UIPickerView alloc] initWithFrame:CGRectZero];
-	self.picker.showsSelectionIndicator = YES;
-	self.picker.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-}
-
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -36,6 +29,13 @@
     return self;
 }
 
+- (void)initializeInputView
+{
+	self.picker = [[UIPickerView alloc] initWithFrame:CGRectZero];
+	self.picker.showsSelectionIndicator = YES;
+	self.picker.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+}
+
 - (UIView *)inputView {
     return self.picker;
 }
@@ -50,12 +50,8 @@
         frame.size.height = 44.0f;
         inputAccessoryView.frame = frame;
 			
-        UIBarButtonItem *doneBtn =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                target:self
-                                                                                action:@selector(done:)];
-        UIBarButtonItem *flexibleSpaceLeft = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                                                           target:nil
-                                                                                           action:nil];
+        UIBarButtonItem *doneBtn =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done:)];
+        UIBarButtonItem *flexibleSpaceLeft = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace  target:nil action:nil];
 			
         NSArray *array = [NSArray arrayWithObjects:flexibleSpaceLeft, doneBtn, nil];
         [inputAccessoryView setItems:array];
