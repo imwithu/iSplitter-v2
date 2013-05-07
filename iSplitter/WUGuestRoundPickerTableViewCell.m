@@ -20,7 +20,7 @@ __strong NSArray *roundingValues = nil;
 {
     guestNumbers = [NSArray arrayWithObjects:@"Guests",@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",
                     @"10",@"11",@"12",@"13",@"14",@"15",@"16",@"17",@"18",@"19",@"20",nil];
-    roundingValues = [NSArray arrayWithObjects:@"Round of", @"25", @"50", @"100", @"500", @"1000", nil];
+    roundingValues = [NSArray arrayWithObjects:@"  Round of", @"1", @"25", @"50", @"100", @"500", @"1000", nil];
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -49,7 +49,7 @@ __strong NSArray *roundingValues = nil;
 {
     guests = gs;
     if ([guests isEqualToString:[guestNumbers objectAtIndex:0]]) {
-        guests = @"1";
+        guests = [guestNumbers objectAtIndex:1];
     }
     [self.picker selectRow:[guestNumbers indexOfObject:guests] inComponent:0 animated:YES];
 }
@@ -58,7 +58,7 @@ __strong NSArray *roundingValues = nil;
 {
     rounding = rd;
     if ([rounding isEqualToString:[roundingValues objectAtIndex:0]]) {
-        rounding = @"25";
+        rounding = [roundingValues objectAtIndex:1];
     }
     [self.picker selectRow:[roundingValues indexOfObject:rounding] inComponent:1 animated:YES];
 }
@@ -89,6 +89,8 @@ __strong NSArray *roundingValues = nil;
     } else if (component == 1) {
         if (row == 0) {
             return [roundingValues objectAtIndex:row];
+        } else if (row == 1){
+            return @"   None";
         } else {
             int r = [[roundingValues objectAtIndex:row] intValue];
             return [NSString stringWithFormat:@"   $%2d.%02d",r/100, r%100];
@@ -98,7 +100,7 @@ __strong NSArray *roundingValues = nil;
 }
 
 - (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component {
-	return 44.0f;
+	return 40.0f;
 }
 
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {

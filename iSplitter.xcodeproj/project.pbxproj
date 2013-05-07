@@ -23,6 +23,7 @@
 		1ADEC4AE17362D04005B3384 /* WUTipPickerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ADEC4AD17362D04005B3384 /* WUTipPickerTableViewCell.m */; };
 		1ADEC4B117364A2C005B3384 /* WUGuestRoundPickerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ADEC4B017364A2C005B3384 /* WUGuestRoundPickerTableViewCell.m */; };
 		1ADEC4B417370192005B3384 /* WUNumberKeyboardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ADEC4B317370192005B3384 /* WUNumberKeyboardTableViewCell.m */; };
+		1ADEC4B7173857BE005B3384 /* WUTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ADEC4B6173857BD005B3384 /* WUTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,8 @@
 		1ADEC4B017364A2C005B3384 /* WUGuestRoundPickerTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WUGuestRoundPickerTableViewCell.m; sourceTree = "<group>"; };
 		1ADEC4B217370192005B3384 /* WUNumberKeyboardTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WUNumberKeyboardTableViewCell.h; sourceTree = "<group>"; };
 		1ADEC4B317370192005B3384 /* WUNumberKeyboardTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WUNumberKeyboardTableViewCell.m; sourceTree = "<group>"; };
+		1ADEC4B5173857BD005B3384 /* WUTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WUTableViewCell.h; sourceTree = "<group>"; };
+		1ADEC4B6173857BD005B3384 /* WUTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WUTableViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +107,8 @@
 				1ADEC48217338306005B3384 /* MainStoryboard.storyboard */,
 				1ADEC490173383E9005B3384 /* WUMainViewController.h */,
 				1ADEC491173383E9005B3384 /* WUMainViewController.m */,
+				1ADEC4B5173857BD005B3384 /* WUTableViewCell.h */,
+				1ADEC4B6173857BD005B3384 /* WUTableViewCell.m */,
 				1ADEC4B217370192005B3384 /* WUNumberKeyboardTableViewCell.h */,
 				1ADEC4B317370192005B3384 /* WUNumberKeyboardTableViewCell.m */,
 				1ADEC4A31734E79A005B3384 /* WUPickerTableViewCell.h */,
@@ -208,6 +213,7 @@
 				1ADEC4AE17362D04005B3384 /* WUTipPickerTableViewCell.m in Sources */,
 				1ADEC4B117364A2C005B3384 /* WUGuestRoundPickerTableViewCell.m in Sources */,
 				1ADEC4B417370192005B3384 /* WUNumberKeyboardTableViewCell.m in Sources */,
+				1ADEC4B7173857BE005B3384 /* WUTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

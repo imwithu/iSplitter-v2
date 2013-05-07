@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WUTableViewCell.h"
 
 @class WUPickerTableViewCell;
 
-@interface WUPickerTableViewCell : UITableViewCell {
+@interface WUPickerTableViewCell : WUTableViewCell {
     UIToolbar *inputAccessoryView;
 }
 

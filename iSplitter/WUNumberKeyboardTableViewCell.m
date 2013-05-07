@@ -124,7 +124,7 @@
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     btn.frame = frame;
     [btn setTitle:title forState:UIControlStateNormal];
-    UIFont *font = [UIFont fontWithName:@"GillSans" size:20];
+    UIFont *font = [UIFont fontWithName:@"GillSans" size:24];
     btn.titleLabel.font = font;
     btn.imageView.image = image;
     

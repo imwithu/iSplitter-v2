@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WUTableViewCell.h"
 
 @class WUNumberKeyboardTableViewCell;
 
@@ -17,7 +18,7 @@
 
 @end
 
-@interface WUNumberKeyboardTableViewCell : UITableViewCell {
+@interface WUNumberKeyboardTableViewCell : WUTableViewCell {
     UIToolbar *inputAccessoryView;
 }
 

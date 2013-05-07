@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WUTableViewCell.h"
 #import "WUNumberKeyboardTableViewCell.h"
 #import "WUTaxPickerTableViewCell.h"
 #import "WUTipPickerTableViewCell.h"

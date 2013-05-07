@@ -85,7 +85,7 @@ __strong NSArray *pickerValues = nil;
 }
 
 - (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component {
-	return 44.0f;
+	return 40.0f;
 }
 
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {

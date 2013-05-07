@@ -24,17 +24,18 @@
 @property (nonatomic) double average;
 
 @property (nonatomic, strong) IBOutlet UISwitch *taxSwitch;
-@property (nonatomic, strong) IBOutlet UIView *keyboard;
 
 @property (nonatomic, strong) UIPickerView *taxPicker;
 @property (nonatomic, strong) UIPickerView *tipPicker;
 @property (nonatomic, strong) UIPickerView *guestPicker;
 
+@property (nonatomic) BOOL isRetina4Inch;
+
 @end
 
 @implementation WUMainViewController
 
-@synthesize subtotal, beforeTax, isAfterTax, taxRate, tax, tipRateMinimum, tipRateMaximum, tip, total, rounding, guests, average, taxSwitch, keyboard;
+@synthesize subtotal, beforeTax, isAfterTax, taxRate, tax, tipRateMinimum, tipRateMaximum, tip, total, rounding, guests, average, taxSwitch, isRetina4Inch;
 
 - (void)viewDidLoad
 {
@@ -43,16 +44,19 @@
     // Uncomment the following line to preserve selection between presentations.
     self.clearsSelectionOnViewWillAppear = NO;
     
+   // self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"receipt.jpg"]];
+    
     // load defautl data
-    subtotal = 123.45;
+    [self loadConfigureItems];
+    subtotal = 0.0;
     isAfterTax = NO;
-    taxRate = 0.0925;
-    tipRateMinimum = 0.13;
-    tipRateMaximum = 0.18;
-    rounding = 100;
-    guests = 4;
-    taxSwitch.enabled = isAfterTax;
-    keyboard = nil;
+    taxSwitch.enabled = isAfterTax; // 这个地方不知道有没有什么风险，taxSwitch会不会还没有被初始化
+    
+    if ([[UIScreen mainScreen] bounds].size.height > 480)
+        isRetina4Inch = YES;
+    else
+        isRetina4Inch = NO;
+    
     [self updateNumbers];
 }
 
@@ -62,229 +66,264 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Save and load data
+
+- (void)loadConfigureItems
+{
+    NSDictionary *data = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"iSplitter-saved-data"] copy];
+    if (data) {
+        taxRate = [[data objectForKey:@"taxRate"] doubleValue];
+        tipRateMinimum = [[data objectForKey:@"tipRateMinimum"] doubleValue];
+        tipRateMaximum = [[data objectForKey:@"tipRateMaximum"] doubleValue];
+        rounding = [[data objectForKey:@"rounding"] intValue];
+        guests = [[data objectForKey:@"guests"] intValue];
+    } else {
+        taxRate = 0.0925;
+        tipRateMinimum = 0.10;
+        tipRateMaximum = 0.20;
+        rounding = 100;
+        guests = 2;
+    }
+ }
+
+- (void)saveConfigureItems
+{
+    NSDictionary *data = @{@"taxRate":@(taxRate), @"tipRateMinimum":@(tipRateMinimum), @"tipRateMaximum":@(tipRateMaximum), @"rounding":@(rounding), @"guests":@(guests)};
+    [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"iSplitter-saved-data"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
 #pragma mark - Table view data source
 
 // Return the number of sections.
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return 3;
 }
 
 // Return the number of rows in the section.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 9;
+    if (section == 0) {
+        return 2;
+    }
+    if (section == 1) {
+        return 4;
+    } else return 3;
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 50.f;
+    if (section == 0) {
+        return 70.f;
+    } else
+        return 30.f;
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat hight = 45;
-    if (indexPath.row == 0) {
-        hight = 80;
+    if (indexPath.section == 0 && indexPath.row == 0) {
+        return 50.f;
     }
-    if (indexPath.row == 3 && !isAfterTax) {
-        hight = 0;
-    }
-    if (indexPath.row == 2 || indexPath.row == 7) {
-        return 60;
-    }
-    return hight;
+    if (isRetina4Inch)
+        return 45.f;
+    else
+        return 35.f;
 }
 
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-
-    UILabel *iSplitterTitle = [[UILabel alloc] init];
-    UIFont *font = [UIFont fontWithName:@"GillSans" size:40];
-    iSplitterTitle.font = font;
-    iSplitterTitle.textAlignment = UITextAlignmentCenter;
-    iSplitterTitle.text = @"iSplitter";
+    UILabel *sectionTitle = [[UILabel alloc] init];
+    UIFont *font = nil;
+    if (section == 0)
+    {
+        font = [UIFont fontWithName:@"GillSans" size:40];
+        sectionTitle.text = @"iSplitter";
+  //      sectionTitle.backgroundColor = [UIColor grayColor];
+    } else {
+        font = [UIFont fontWithName:@"GillSans" size:24];
+        if (section == 1) {
+            sectionTitle.text = @"Detail";
+        } else {
+            sectionTitle.text = @"Summary";
+        }
+    }
+    sectionTitle.font = font;
+    sectionTitle.textAlignment = UITextAlignmentCenter;
         
-    return iSplitterTitle;
+    return sectionTitle;
 }
+
+- (void)setAttributedLable:(UILabel *)textLabel text:(NSString *)text rangeText:(NSString *)rangeText size:(float)size color:(UIColor *)color
+{
+    textLabel.font = [UIFont fontWithName:@"GillSans-Light" size:12];
+    textLabel.textColor = color;
+    
+    NSRange arange = [text rangeOfString:rangeText];
+    NSMutableAttributedString *richText = [[NSMutableAttributedString alloc] initWithString:text];
+    NSDictionary *attr = @{NSFontAttributeName:[UIFont fontWithName:@"GillSans-Light" size:size]};
+    [richText setAttributes:attr range:arange];
+    
+    textLabel.attributedText = richText;
+}
+
+- (void)setAttributedLable:(UILabel *)textLabel text:(NSString *)text rangeText:(NSString *)rangeText
+{
+    [self setAttributedLable:textLabel text:text rangeText:rangeText size:18 color:[UIColor blackColor]];
+}
+
+- (void)setAttributedLable:(UILabel *)textLabel text:(NSString *)text size:(float)size color:(UIColor *)color
+{
+    [self setAttributedLable:textLabel text:text rangeText:text size:size color:color];
+}
+
+- (void)setAttributedLable:(UILabel *)textLabel text:(NSString *)text color:(UIColor *)color
+{
+    [self setAttributedLable:textLabel text:text size:18 color:color];
+}
+
+- (void)setAttributedLable:(UILabel *)textLabel text:(NSString *)text size:(float)size
+{
+    [self setAttributedLable:textLabel text:text size:size color:[UIColor blackColor]];
+}
+
+- (void)setAttributedLable:(UILabel *)textLabel text:(NSString *)text
+{
+    [self setAttributedLable:textLabel text:text size:18];
+}
+
 
 // Configure the cell...
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{  
-    switch (indexPath.row) {
-        case 0:
-        {
+{
+    NSString *text = nil;
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0) {
             // total section number
             WUNumberKeyboardTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TotalCell"];
             if (!cell) {
                 cell = [[WUNumberKeyboardTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"TotalCell"];
                 cell.delegate = self;
+                cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+                cell.textLabel.font = [UIFont fontWithName:@"GillSans-Light" size:24];
+                cell.textLabel.textColor = [UIColor blackColor];
+                cell.detailTextLabel.font = [UIFont fontWithName:@"GillSans-Light" size:36];
+                cell.detailTextLabel.textColor = [UIColor orangeColor];
+                cell.textLabel.text = @"Subtotal:";
             }
-            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-            cell.textLabel.text = @"Total:";
-            cell.textLabel.font = [UIFont fontWithName:@"GillSans" size:36];
             cell.detailTextLabel.text = [NSString stringWithFormat:@"$%.2f", subtotal];
-            cell.detailTextLabel.font = [UIFont fontWithName:@"GillSans" size:36];
-            cell.detailTextLabel.textColor = [UIColor redColor];
             
             return cell;
-        }
-            break;
-            
-        case 1:
-        {
+        } else {
             // total section setting before tax or after tax
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ATCell"];
+            WUTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ATCell"];
             if (!cell) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ATCell"];
-            }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    //        cell.indentationWidth = 10;
-      //      cell.indentationLevel = 2;
-            cell.textLabel.text = @"After tax";
-            cell.detailTextLabel.text = @"";
-            
-            if (!taxSwitch) {
-                CGRect rect = CGRectMake(230, 10, 0, 0);
-                taxSwitch = [[UISwitch alloc] initWithFrame:rect];
+                cell = [[WUTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ATCell"];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                if (isRetina4Inch) 
+                    taxSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(220, 9, 0, 0)];
+                else
+                    taxSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(220, 4, 0, 0)];
+                    
                 [taxSwitch addTarget:self action:@selector(taxSwitchChanged:) forControlEvents:UIControlEventAllTouchEvents];
                 [cell addSubview:taxSwitch];
             }
-            
-            
+            text = [NSString stringWithFormat:@"After tax (%@)", [taxSwitch isOn]?@"Yes":@"No"];
+            [self setAttributedLable:cell.textLabel text:text rangeText:@"After tax"];
+           
             return cell;
         }
-            break;
-            
-        case 2:
-        {
-            // Summary section title
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SummarySectionCell"];
+    } else if (indexPath.section == 1) {
+        if (indexPath.row == 0) {
+            WUTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BTCell"];
             if (!cell) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"SummarySectionCell"];
+                cell = [[WUTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"BTCell"];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                [self setAttributedLable:cell.textLabel text:@"Before tax"];
             }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.textLabel.text = @"Summary";
-            cell.detailTextLabel.text = @"";
+            text = [NSString stringWithFormat:@"$%.2f",beforeTax];
+            [self setAttributedLable:cell.detailTextLabel text:text];
             
             return cell;
-        }
-            break;
-        case 3:
-        {
-            // before tax number
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BTCell"];
-            if (!cell) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"BTCell"];
-            }
-           if (isAfterTax) {
-                cell.hidden = NO;
- //               cell.indentationLevel = 2;
-   //             cell.indentationWidth = 10;
-                cell.textLabel.text = @"Before tax";
-                cell.detailTextLabel.text = [NSString stringWithFormat:@"$%.2f",beforeTax];
-            } else {
-                cell.hidden = YES;
-            }
-            
-            return cell;
-        }
-            break;
-        case 4:
-        {
-            // tax
+        } else if (indexPath.row  == 1) {
             WUTaxPickerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TaxCell"];
             if (!cell) {
                 cell = [[WUTaxPickerTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"TaxCell"];
+                cell.selectionStyle = UITableViewCellSelectionStyleBlue;
                 cell.delegate = self;
             }
-            int tr = (int)(taxRate*10000);
-            cell.integerPart = [NSString stringWithFormat:@"%d",tr/100];
-            cell.decimalPart = [NSString stringWithFormat:@"%02d", tr%100];
-  //          cell.indentationLevel = 2;
-    //        cell.indentationWidth =10;
-            cell.textLabel.text = [NSString stringWithFormat:@"Tax(%.2f%%)", taxRate*100];
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"$%.2f", tax];
+            [self updateTaxCell:cell];
             
             return cell;
-        }
-            break;
             
-        case 5:
-        {
-            // tip
+        } else if ( indexPath.row == 2) {
             WUTipPickerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TipCell"];
             if (!cell) {
                 cell = [[WUTipPickerTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"TipCell"];
+                cell.selectionStyle = UITableViewCellSelectionStyleBlue;
                 cell.delegate = self;
             }
-            cell.tipRateMin = [NSString stringWithFormat:@"%d", (int)(tipRateMinimum*100)];
-            cell.tipRateMax = [NSString stringWithFormat:@"%d", (int)(tipRateMaximum*100)];
-   //         cell.indentationLevel = 2;
-     //       cell.indentationWidth =10;
-            if (tip == 0 && tipRateMaximum > 0) {
-                cell.textLabel.text = [NSString stringWithFormat:@"Tip(%.2f%% - %.2f%%)", tipRateMinimum*100, tipRateMaximum*100];
-            } else {
-                double tipRate = 0;
-                if ( beforeTax > 0 )
-                    tipRate = tip/beforeTax;
-                cell.textLabel.text = [NSString stringWithFormat:@"Tip(%.2f%%)", tipRate*100];
-            }
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"$%.2f",tip];
+            
+            [self updateTipCell:cell];
             
             return cell;
-        }
-            break;
-        case 6:
-        {
-            // total
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TACell"];
-            if (!cell) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"TACell"];
-            }
-   //         cell.indentationLevel = 2;
-     //       cell.indentationWidth =10;
-            cell.textLabel.text = [NSString stringWithFormat:@"Total Amount"];
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"$%.2f", total];
 
-            
-            return cell;
-        }
-            break;
-        case 7:
-        {
-            // split section title
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SplitSectionCell"];
-            if (!cell) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"SplitSectionCell"];
-            }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.textLabel.text = @"Split";
-            cell.detailTextLabel.text = @"";
-            
-            return cell;
-        }
-            break;
-        case 8:
-        {
-            // Guest rounding cell
+        } else {
             WUGuestRoundPickerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"GuestCell"];
             if (!cell) {
                 cell = [[WUGuestRoundPickerTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"GuestCell"];
+                cell.selectionStyle = UITableViewCellSelectionStyleBlue;
                 cell.delegate = self;
             }
-            cell.guests = [NSString stringWithFormat:@"%d", self.guests];
-            cell.rounding = [NSString stringWithFormat:@"%d", self.rounding];
-       //     cell.indentationLevel = 2;
-         //   cell.indentationWidth =10;
-            cell.textLabel.text = [NSString stringWithFormat:@"Guests(x%d)",guests];
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"$%.2f", average];
+            [self updateGuestRoundCell:cell];
+            return cell;
+        }
+    } else {
+        if (indexPath.row == 0) {
+            // total
+            WUTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TACell"];
+            if (!cell) {
+                cell = [[WUTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"TACell"];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                [self setAttributedLable:cell.textLabel text:@"Total Amount"];
+            }
+            text = [NSString stringWithFormat:@"$%.2f", total];
+            [self setAttributedLable:cell.detailTextLabel text:text];
             
             return cell;
-       }
-        default:
-            break;
+        } else if(indexPath.row == 1) {
+            WUTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CACell"];
+            if (!cell) {
+                cell = [[WUTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CACell"];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                [self setAttributedLable:cell.textLabel text:@"Collect Amount"];
+            }
+            text = [NSString stringWithFormat:@"$%.2f", average * guests];
+            [self setAttributedLable:cell.detailTextLabel text:text];
+            
+            return cell;
+        } else {
+            WUTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DiffCell"];
+            if (!cell) {
+                cell = [[WUTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"DiffCell"];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                [self setAttributedLable:cell.textLabel text:@"Balance"];
+            }
+            double diff = total - average * guests ;
+            diff = [self WURoundNumber:diff withRate:1.0];
+            if (diff > 0) {
+                NSLog(@"diff is > 0(%f)",diff);
+                text = [NSString stringWithFormat:@"-$%.2f", diff];
+                [self setAttributedLable:cell.detailTextLabel text:text color:[UIColor orangeColor]];
+            } else {
+                NSLog(@"diff is <= 0(%f)",diff);
+                diff = 0-diff;
+                text = [NSString stringWithFormat:@"$%.2f", diff];
+                [self setAttributedLable:cell.detailTextLabel text:text];
+            }
+            
+            return cell;           
+        }
     }
     
     return nil;
@@ -315,7 +354,7 @@
 - (void)updateNumbers
 {
     if (isAfterTax) {
-        beforeTax = subtotal/(1+taxRate);
+        beforeTax = [self WURoundNumber:(subtotal/(1+taxRate)) withRate:1.0];
         tax = subtotal - beforeTax;
     } else {
         beforeTax = subtotal;
@@ -327,52 +366,96 @@
     
     tip = tipMin;
     
-    for (int i=tipMin*100; i<tipMax*100; i++) {
+    for (int i=tipMin*100; ; i++) {
         int tempTotal = beforeTax*100+tax*100+i;
         if ( tempTotal % (rounding*guests) == 0) {
             tip = ((double)i)/100;
-            NSLog(@"tempTotal=%d tip=%f",tempTotal, tip);
-            
             break;
         }
     }
 
     total = beforeTax+tax+tip;
-    average = total / guests;
+    average = [self WURoundNumber:(total / guests) withRate:1.0];
+    
+    if (tip > tipMax) {
+        tip = tipMin;
+    }
+    total = beforeTax+tax+tip;
     
     NSLog(@"subtotal=[%f] before tax=[%f],tax=[%f], tip=[%f], total=[%f] guest=[%d] average=[%f]", subtotal, beforeTax, tax, tip,total, guests, average);
 }
 
 - (IBAction)taxSwitchChanged:(UISwitch *)sender
 {
-    NSLog(@"after tax changed");
     isAfterTax = [taxSwitch isOn];
     [self updateNumbers];
     [self.tableView reloadData];
 }
 
+- (void)updateTaxCell:(WUTaxPickerTableViewCell *)cell
+{
+    int tr = (int)(taxRate*10000);
+    cell.integerPart = [NSString stringWithFormat:@"%d",tr/100];
+    cell.decimalPart = [NSString stringWithFormat:@"%02d", tr%100];
+    NSString *text = [NSString stringWithFormat:@"Tax (%.2f%%)", taxRate*100];
+    [self setAttributedLable:cell.textLabel text:text rangeText:@"Tax"];
+    text = [NSString stringWithFormat:@"$%.2f", tax];
+    [self setAttributedLable:cell.detailTextLabel text:text];
+}
+
 - (void)taxCell:(WUTaxPickerTableViewCell *)cell didEndEditingWithInteger:(NSString *)integerPart decimal:(NSString *)decimalPart
 {
-    NSLog(@"taxCell: didEndEditing with %@.%@", integerPart, decimalPart);
-    self.taxRate = ((double)[integerPart intValue])/100 + ((double)[decimalPart intValue])/10000;
+    self.taxRate = [integerPart doubleValue]/100 + [decimalPart doubleValue]/10000;
+    [self saveConfigureItems];
     [self updateNumbers];
+    [self updateTaxCell:cell];
+}
+
+- (void)updateTipCell:(WUTipPickerTableViewCell *)cell
+{
+    cell.tipRateMin = [NSString stringWithFormat:@"%d", (int)(tipRateMinimum*100)];
+    cell.tipRateMax = [NSString stringWithFormat:@"%d", (int)(tipRateMaximum*100)];
+    
+    NSString *text = nil;
+    if (tipRateMinimum == tipRateMaximum) {
+        text = [NSString stringWithFormat:@"Tip (%.0f%%)", tipRateMaximum*100];
+    } else if (beforeTax > 0)
+        text = [NSString stringWithFormat:@"Tip (%.0f%% of %.0f%%-%.0f%%)",(tip/beforeTax)*100, tipRateMinimum*100, tipRateMaximum*100];
+    else
+        text = [NSString stringWithFormat:@"Tip (%.0f%%-%.0f%%)",tipRateMinimum*100, tipRateMaximum*100];
+    [self setAttributedLable:cell.textLabel text:text rangeText:@"Tip"];
+    text = [NSString stringWithFormat:@"$%.2f", tip];
+    [self setAttributedLable:cell.detailTextLabel text:text];
 }
 
 - (void)tipCell:(WUTipPickerTableViewCell *)cell didEndEditingFromMinimum:(NSString *)tipRateMin toMaximum:(NSString *)tipRateMax
 {
-    NSLog(@"tipCell: didEndEditing from %@ to %@", tipRateMin, tipRateMax);
-    self.tipRateMinimum = ((double)[tipRateMin intValue])/100 ;
-    self.tipRateMaximum = ((double)[tipRateMax intValue])/100 ;
+    self.tipRateMinimum = [tipRateMin doubleValue]/100 ;
+    self.tipRateMaximum = [tipRateMax doubleValue]/100 ;
+    [self saveConfigureItems];
     [self updateNumbers];
-    
+    [self updateTipCell:cell];
+}
+
+- (void)updateGuestRoundCell:(WUGuestRoundPickerTableViewCell *)cell
+{
+    cell.guests = [NSString stringWithFormat:@"%d", self.guests];
+    cell.rounding = [NSString stringWithFormat:@"%d", self.rounding];
+    NSString *text = [NSString stringWithFormat:@"Split (x%d)",guests];
+    [self setAttributedLable:cell.textLabel text:text rangeText:@"Split"];
+    text = [NSString stringWithFormat:@"$%.2f", average];
+    [self setAttributedLable:cell.detailTextLabel text:text];
+
 }
 
 - (void)guestRoundCell:(WUGuestRoundPickerTableViewCell *)cell didEndEditingWithGuests:(NSString *)gs Rounding:(NSString *)rd
 {
-    NSLog(@"guestRoundCell: didEndEditing with guests[%@] rounding[%@]",gs, rd);
     self.guests = [gs intValue];
     self.rounding = [rd intValue];
+    [self saveConfigureItems];
     [self updateNumbers];
+    
+    [self updateGuestRoundCell:cell];
 }
 
 - (void)keyboardCell:(WUNumberKeyboardTableViewCell *)cell keyboardPressed:(NSString *)key
@@ -393,8 +476,9 @@
                                            otherButtonTitles:nil, nil];
         [av show];
     }
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"$%.2f", subtotal ];
     [self updateNumbers];
+    
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"$%.2f", subtotal];
 }
 
 @end
