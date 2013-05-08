@@ -139,7 +139,13 @@
     {
         font = [UIFont fontWithName:@"GillSans" size:40];
         sectionTitle.text = @"iSplitter";
-  //      sectionTitle.backgroundColor = [UIColor grayColor];
+        // 加上帮助页面的按钮
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeInfoDark];
+        btn.frame = CGRectMake(280, 20, 20, 20);
+        
+        // 这里需要增加按钮的事件。及，使用segue进入到info页面。打开一系列使用帮助。
+        
+        [sectionTitle addSubview:btn];
     } else {
         font = [UIFont fontWithName:@"GillSans" size:24];
         if (section == 1) {
@@ -312,11 +318,11 @@
             double diff = total - average * guests ;
             diff = [self WURoundNumber:diff withRate:1.0];
             if (diff > 0) {
-                NSLog(@"diff is > 0(%f)",diff);
+             //   NSLog(@"diff is > 0(%f)",diff);
                 text = [NSString stringWithFormat:@"-$%.2f", diff];
                 [self setAttributedLable:cell.detailTextLabel text:text color:[UIColor orangeColor]];
             } else {
-                NSLog(@"diff is <= 0(%f)",diff);
+             //   NSLog(@"diff is <= 0(%f)",diff);
                 diff = 0-diff;
                 text = [NSString stringWithFormat:@"$%.2f", diff];
                 [self setAttributedLable:cell.detailTextLabel text:text];
@@ -355,9 +361,9 @@
 {
     if (isAfterTax) {
         beforeTax = [self WURoundNumber:(subtotal/(1+taxRate)) withRate:1.0];
-        tax = subtotal - beforeTax;
+        tax = [self WURoundNumber:(subtotal-beforeTax) withRate:1.0];
     } else {
-        beforeTax = subtotal;
+        beforeTax = [self WURoundNumber:subtotal withRate:1.0];
         tax = [self WURoundNumber:beforeTax withRate:taxRate];
     }
     
@@ -365,24 +371,26 @@
     double tipMax = [self WURoundNumber:beforeTax withRate:tipRateMaximum];
     
     tip = tipMin;
-    
-    for (int i=tipMin*100; ; i++) {
-        int tempTotal = beforeTax*100+tax*100+i;
+
+    int intbt = (int)round(beforeTax*100);
+    int inttax = (int)round(tax*100);
+
+    for (int inttip=(int)round(tipMin*100); ; inttip++) {
+        int tempTotal = intbt+inttax+inttip;
         if ( tempTotal % (rounding*guests) == 0) {
-            tip = ((double)i)/100;
+            tip = ((double)inttip)/100;
             break;
         }
     }
-
     total = beforeTax+tax+tip;
-    average = [self WURoundNumber:(total / guests) withRate:1.0];
+    average = [self WURoundNumber:(total/guests) withRate:1.0];
     
-    if (tip > tipMax) {
+    if ([self WURoundNumber:tip withRate:1.0] > tipMax) {
         tip = tipMin;
     }
     total = beforeTax+tax+tip;
     
-    NSLog(@"subtotal=[%f] before tax=[%f],tax=[%f], tip=[%f], total=[%f] guest=[%d] average=[%f]", subtotal, beforeTax, tax, tip,total, guests, average);
+  //  NSLog(@"subtotal=[%f] before tax=[%f],tax=[%f], tip=[%f], total=[%f] guest=[%d] round=[%d] average=[%f]", subtotal, beforeTax, tax, tip,total, guests, rounding, average);
 }
 
 - (IBAction)taxSwitchChanged:(UISwitch *)sender
@@ -420,7 +428,7 @@
     if (tipRateMinimum == tipRateMaximum) {
         text = [NSString stringWithFormat:@"Tip (%.0f%%)", tipRateMaximum*100];
     } else if (beforeTax > 0)
-        text = [NSString stringWithFormat:@"Tip (%.0f%% of %.0f%%-%.0f%%)",(tip/beforeTax)*100, tipRateMinimum*100, tipRateMaximum*100];
+        text = [NSString stringWithFormat:@"Tip (%.2f%% of %.0f%%-%.0f%%)",(tip/beforeTax)*100, tipRateMinimum*100, tipRateMaximum*100];
     else
         text = [NSString stringWithFormat:@"Tip (%.0f%%-%.0f%%)",tipRateMinimum*100, tipRateMaximum*100];
     [self setAttributedLable:cell.textLabel text:text rangeText:@"Tip"];
@@ -460,7 +468,7 @@
 
 - (void)keyboardCell:(WUNumberKeyboardTableViewCell *)cell keyboardPressed:(NSString *)key
 {
-    if ([key isEqualToString:@"Clean"]) {
+    if ([key isEqualToString:@"AC"]) {
         subtotal = 0;
     } else if ([key isEqualToString:@"<"]) {
         subtotal /= 10;
