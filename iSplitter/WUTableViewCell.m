@@ -15,7 +15,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-  //      self.detailTextLabel.textColor = [UIColor blackColor];
     }
     return self;
 }
@@ -27,13 +26,12 @@
     // Configure the view for the selected state
 }
 
-// 将detailTextLabel往左移动一下
+// 将detailTextLabel往左移动一下，主要是为了排版的美观
 -(void)layoutSubviews{
     [super layoutSubviews];
     CGRect frame = self.detailTextLabel.frame;
     frame.origin.x -= 10;
     self.detailTextLabel.frame = frame;
-//    self.detailTextLabel.textColor = [UIColor blackColor];
 }
 
 @end

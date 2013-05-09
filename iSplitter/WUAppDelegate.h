@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WUUserGuideViewController.h"
+#import "WUMainViewController.h"
 
-@interface WUAppDelegate : UIResponder <UIApplicationDelegate>
+@interface WUAppDelegate : UIResponder <UIApplicationDelegate >
 
 @property (strong, nonatomic) UIWindow *window;
 

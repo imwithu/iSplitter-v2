@@ -7,6 +7,7 @@
 //
 
 #import "WUMainViewController.h"
+#import "WUUserGuideViewController.h"
 
 @interface WUMainViewController ()
 
@@ -44,7 +45,6 @@
     // Uncomment the following line to preserve selection between presentations.
     self.clearsSelectionOnViewWillAppear = NO;
     
-   // self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"receipt.jpg"]];
     
     // load defautl data
     [self loadConfigureItems];
@@ -58,6 +58,12 @@
         isRetina4Inch = NO;
     
     [self updateNumbers];
+
+}
+
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
 }
 
 - (void)didReceiveMemoryWarning
@@ -126,26 +132,22 @@
         return 50.f;
     }
     if (isRetina4Inch)
-        return 45.f;
+        return 43.f;
     else
-        return 35.f;
+        return 33.f;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UILabel *sectionTitle = [[UILabel alloc] init];
+    sectionTitle.textColor = [UIColor blackColor];
+    sectionTitle.textAlignment = UITextAlignmentCenter;
+    
     UIFont *font = nil;
     if (section == 0)
     {
         font = [UIFont fontWithName:@"GillSans" size:40];
         sectionTitle.text = @"iSplitter";
-        // 加上帮助页面的按钮
-        UIButton *btn = [UIButton buttonWithType:UIButtonTypeInfoDark];
-        btn.frame = CGRectMake(280, 20, 20, 20);
-        
-        // 这里需要增加按钮的事件。及，使用segue进入到info页面。打开一系列使用帮助。
-        
-        [sectionTitle addSubview:btn];
     } else {
         font = [UIFont fontWithName:@"GillSans" size:24];
         if (section == 1) {
@@ -155,10 +157,10 @@
         }
     }
     sectionTitle.font = font;
-    sectionTitle.textAlignment = UITextAlignmentCenter;
-        
+    
     return sectionTitle;
 }
+
 
 - (void)setAttributedLable:(UILabel *)textLabel text:(NSString *)text rangeText:(NSString *)rangeText size:(float)size color:(UIColor *)color
 {
@@ -202,6 +204,9 @@
 // Configure the cell...
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+  //  NSLog(@"indexPath=%@",indexPath);
+    UITableViewCell *returnCell = nil;
+    
     NSString *text = nil;
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
@@ -219,7 +224,7 @@
             }
             cell.detailTextLabel.text = [NSString stringWithFormat:@"$%.2f", subtotal];
             
-            return cell;
+            returnCell = cell;
         } else {
             // total section setting before tax or after tax
             WUTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ATCell"];
@@ -227,9 +232,9 @@
                 cell = [[WUTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ATCell"];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 if (isRetina4Inch) 
-                    taxSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(220, 9, 0, 0)];
+                    taxSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(220, 8, 0, 0)];
                 else
-                    taxSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(220, 4, 0, 0)];
+                    taxSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(220, 3, 0, 0)];
                     
                 [taxSwitch addTarget:self action:@selector(taxSwitchChanged:) forControlEvents:UIControlEventAllTouchEvents];
                 [cell addSubview:taxSwitch];
@@ -237,7 +242,7 @@
             text = [NSString stringWithFormat:@"After tax (%@)", [taxSwitch isOn]?@"Yes":@"No"];
             [self setAttributedLable:cell.textLabel text:text rangeText:@"After tax"];
            
-            return cell;
+            returnCell = cell;
         }
     } else if (indexPath.section == 1) {
         if (indexPath.row == 0) {
@@ -250,7 +255,7 @@
             text = [NSString stringWithFormat:@"$%.2f",beforeTax];
             [self setAttributedLable:cell.detailTextLabel text:text];
             
-            return cell;
+            returnCell = cell;
         } else if (indexPath.row  == 1) {
             WUTaxPickerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TaxCell"];
             if (!cell) {
@@ -260,7 +265,7 @@
             }
             [self updateTaxCell:cell];
             
-            return cell;
+            returnCell = cell;
             
         } else if ( indexPath.row == 2) {
             WUTipPickerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TipCell"];
@@ -272,7 +277,7 @@
             
             [self updateTipCell:cell];
             
-            return cell;
+            returnCell = cell;
 
         } else {
             WUGuestRoundPickerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"GuestCell"];
@@ -282,7 +287,7 @@
                 cell.delegate = self;
             }
             [self updateGuestRoundCell:cell];
-            return cell;
+            returnCell = cell;
         }
     } else {
         if (indexPath.row == 0) {
@@ -296,7 +301,7 @@
             text = [NSString stringWithFormat:@"$%.2f", total];
             [self setAttributedLable:cell.detailTextLabel text:text];
             
-            return cell;
+            returnCell = cell;
         } else if(indexPath.row == 1) {
             WUTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CACell"];
             if (!cell) {
@@ -307,8 +312,8 @@
             text = [NSString stringWithFormat:@"$%.2f", average * guests];
             [self setAttributedLable:cell.detailTextLabel text:text];
             
-            return cell;
-        } else {
+            returnCell = cell;
+        } else if (indexPath.row == 2){
             WUTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DiffCell"];
             if (!cell) {
                 cell = [[WUTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"DiffCell"];
@@ -328,11 +333,11 @@
                 [self setAttributedLable:cell.detailTextLabel text:text];
             }
             
-            return cell;           
-        }
-    }
-    
-    return nil;
+            returnCell = cell;
+        } 
+     }
+ //   NSLog(@"cell.frame=%@", NSStringFromCGRect(returnCell.frame));
+    return returnCell;
 }
 
 
@@ -385,7 +390,7 @@
     total = beforeTax+tax+tip;
     average = [self WURoundNumber:(total/guests) withRate:1.0];
     
-    if ([self WURoundNumber:tip withRate:1.0] > tipMax) {
+    if (tip > tipMax) {
         tip = tipMin;
     }
     total = beforeTax+tax+tip;
@@ -471,11 +476,10 @@
     if ([key isEqualToString:@"AC"]) {
         subtotal = 0;
     } else if ([key isEqualToString:@"<"]) {
-        subtotal /= 10;
-        subtotal = [self WURoundNumber:subtotal withRate:1.0];
+        subtotal = floor(subtotal*10)/100;
     } else if (subtotal < 10000) {
         subtotal *= 10;
-        subtotal += ((double)[key intValue])/100;
+        subtotal += [key doubleValue]/100;
     } else {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"To expensive!"
                                                      message:[NSString stringWithFormat:@"Are you crazy?  \"%.1f%@\" is big number...", subtotal*10,key]
@@ -488,5 +492,21 @@
     
     cell.detailTextLabel.text = [NSString stringWithFormat:@"$%.2f", subtotal];
 }
+
+
+- (void)helpViewControllerDidFinished:(WUUserGuideViewController *)controller
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier] isEqualToString:@"HelpViewSegue"]) {
+        [[segue destinationViewController] setDelegate:self];
+    }
+}
+
 
 @end

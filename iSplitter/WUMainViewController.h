@@ -12,7 +12,10 @@
 #import "WUTaxPickerTableViewCell.h"
 #import "WUTipPickerTableViewCell.h"
 #import "WUGuestRoundPickerTableViewCell.h"
+#import "WUUserGuideViewController.h"
 
-@interface WUMainViewController : UITableViewController <WUNumberKeyboardTableViewCellDelegate, WUTaxPickerTableViewCellDelegate, WUTipPickerTableViewCellDelegate, WUGuestRoundPickerTableViewCellDelegate>
+
+@interface WUMainViewController : UITableViewController <WUNumberKeyboardTableViewCellDelegate, WUTaxPickerTableViewCellDelegate, WUTipPickerTableViewCellDelegate, WUGuestRoundPickerTableViewCellDelegate, WUUserGuideViewControllerDelegate>
+
 
 @end

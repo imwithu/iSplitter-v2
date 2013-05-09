@@ -7,12 +7,21 @@
 //
 
 #import "WUAppDelegate.h"
+#import "WUUserGuideViewController.h"
+#import "WUMainViewController.h"
 
 @implementation WUAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    //判断是不是第一次启动应用
+    NSString *version = [[NSUserDefaults standardUserDefaults] stringForKey:@"iSplitter-version"];
+    if (version == nil || ![version isEqualToString:@"2.0.0"])
+    {
+        [[NSUserDefaults standardUserDefaults] setValue:@"2.0.0" forKey:@"iSplitter-version"];
+    }
+
     return YES;
 }
 							
@@ -42,5 +51,7 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
+
 
 @end
