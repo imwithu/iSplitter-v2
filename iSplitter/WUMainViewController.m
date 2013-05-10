@@ -72,10 +72,10 @@
     
     //判断是不是第一次启动应用
     NSString *version = [[NSUserDefaults standardUserDefaults] stringForKey:@"iSplitter-version"];
-    if (version == nil || ![version isEqualToString:@"2.0.0"])
+    if (version == nil || ![version isEqualToString:@"2.0.1"])
     {
         NSLog(@"First launch");
-        [[NSUserDefaults standardUserDefaults] setValue:@"2.0.0" forKey:@"iSplitter-version"];
+        [[NSUserDefaults standardUserDefaults] setValue:@"2.0.1" forKey:@"iSplitter-version"];
         [WUUserGuideViewController show];
     }
 }

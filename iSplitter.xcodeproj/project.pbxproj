@@ -368,15 +368,15 @@
 		1ADEC48B17338306005B3384 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Jianqiang Yu (7Q8G3FSF68)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Jianqiang Yu (7Q8G3FSF68)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iSplitter/iSplitter-Prefix.pch";
 				INFOPLIST_FILE = "iSplitter/iSplitter-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "C22C47DB-3C89-48F2-B49F-CD9C0EE9BC1F";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C22C47DB-3C89-48F2-B49F-CD9C0EE9BC1F";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;

@@ -67,6 +67,7 @@
     [scrollView setContentSize:CGSizeMake(width*[guidePictures count],0)];
     [scrollView setBackgroundColor:[UIColor clearColor]];
     [scrollView setPagingEnabled:YES];
+    [scrollView setShowsHorizontalScrollIndicator:NO]; //隐藏水平滚动条
     
     for (int i = 0; i<[guidePictures count]; i++) {
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(width*i+widthShrink/2, heightShrink/2, width-widthShrink, height-heightShrink)];
