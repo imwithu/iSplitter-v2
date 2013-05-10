@@ -66,6 +66,20 @@
     [super viewWillAppear:animated];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    //判断是不是第一次启动应用
+    NSString *version = [[NSUserDefaults standardUserDefaults] stringForKey:@"iSplitter-version"];
+    if (version == nil || ![version isEqualToString:@"2.0.0"])
+    {
+        NSLog(@"First launch");
+        [[NSUserDefaults standardUserDefaults] setValue:@"2.0.0" forKey:@"iSplitter-version"];
+        [WUUserGuideViewController show];
+    }
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -493,20 +507,11 @@
     cell.detailTextLabel.text = [NSString stringWithFormat:@"$%.2f", subtotal];
 }
 
-
-- (void)helpViewControllerDidFinished:(WUUserGuideViewController *)controller
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
+- (IBAction)infoButtonPressed:(UIButton *)sender {
+    [WUUserGuideViewController show];
 }
 
 
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([[segue identifier] isEqualToString:@"HelpViewSegue"]) {
-        [[segue destinationViewController] setDelegate:self];
-    }
-}
 
 
 @end

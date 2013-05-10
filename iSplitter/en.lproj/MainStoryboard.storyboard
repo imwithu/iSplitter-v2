@@ -26,7 +26,7 @@
                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
-                                        <segue destination="nrj-yh-rRf" kind="modal" identifier="HelpViewSegue" id="frg-ip-Vt3"/>
+                                        <action selector="infoButtonPressed:" destination="eOy-T8-P8b" eventType="touchUpInside" id="bZZ-y0-d8p"/>
                                     </connections>
                                 </button>
                             </subviews>
@@ -281,33 +281,31 @@
             </objects>
             <point key="canvasLocation" x="-106" y="-37"/>
         </scene>
-        <!--User Guide View Controller-->
-        <scene sceneID="r0w-kf-w7h">
-            <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="lPf-cl-QW8" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <viewController storyboardIdentifier="Help" id="nrj-yh-rRf" customClass="WUUserGuideViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="mQ7-9Q-CqL">
-                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="edI-wb-2Ww"/>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="edI-wb-2Ww" firstAttribute="bottom" secondItem="mQ7-9Q-CqL" secondAttribute="bottom" type="default" id="HWR-YJ-PuM"/>
-                            <constraint firstItem="edI-wb-2Ww" firstAttribute="trailing" secondItem="mQ7-9Q-CqL" secondAttribute="trailing" type="default" id="Wsd-gi-zol"/>
-                            <constraint firstItem="edI-wb-2Ww" firstAttribute="top" secondItem="mQ7-9Q-CqL" secondAttribute="top" type="default" id="h9o-6J-0ix"/>
-                            <constraint firstItem="edI-wb-2Ww" firstAttribute="leading" secondItem="mQ7-9Q-CqL" secondAttribute="leading" type="default" id="uRv-sL-MM6"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="scrollView" destination="edI-wb-2Ww" id="cW6-bA-559"/>
-                    </connections>
-                </viewController>
-            </objects>
-            <point key="canvasLocation" x="377" y="-37"/>
-        </scene>
     </scenes>
+    <classes>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+        <class className="WUMainViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WUMainViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="taxSwitchChanged:" candidateClass="UISwitch"/>
+                <relationship kind="outlet" name="taxSwitch" candidateClass="UISwitch"/>
+            </relationships>
+        </class>
+        <class className="WUPickerTableViewCell" superclassName="WUTableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WUPickerTableViewCell.h"/>
+        </class>
+        <class className="WUTableViewCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WUTableViewCell.h"/>
+        </class>
+        <class className="WUTaxPickerTableViewCell" superclassName="WUPickerTableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WUTaxPickerTableViewCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="delegate"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

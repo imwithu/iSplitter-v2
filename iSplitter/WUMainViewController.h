@@ -15,7 +15,7 @@
 #import "WUUserGuideViewController.h"
 
 
-@interface WUMainViewController : UITableViewController <WUNumberKeyboardTableViewCellDelegate, WUTaxPickerTableViewCellDelegate, WUTipPickerTableViewCellDelegate, WUGuestRoundPickerTableViewCellDelegate, WUUserGuideViewControllerDelegate>
+@interface WUMainViewController : UITableViewController <WUNumberKeyboardTableViewCellDelegate, WUTaxPickerTableViewCellDelegate, WUTipPickerTableViewCellDelegate, WUGuestRoundPickerTableViewCellDelegate>
 
 
 @end

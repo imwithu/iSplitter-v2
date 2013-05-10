@@ -8,18 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@class WUUserGuideViewController ;
 
-@protocol WUUserGuideViewControllerDelegate <NSObject>
+@interface WUUserGuideViewController : UIViewController <UIScrollViewDelegate>
 
-- (void)helpViewControllerDidFinished:(WUUserGuideViewController *)userGuideViewController;
-
-@end
-
-
-@interface WUUserGuideViewController : UIViewController
-
-@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (weak, nonatomic) id<WUUserGuideViewControllerDelegate> delegate;
++ (void)show;
++ (void)hide;
 
 @end

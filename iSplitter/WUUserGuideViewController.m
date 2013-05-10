@@ -9,17 +9,17 @@
 #import "WUUserGuideViewController.h"
 #import "WUMainViewController.h"
 
-@interface WUUserGuideViewController () {
-    float height;
-    float width;
-    NSString *filePrefix;
-}
+@interface WUUserGuideViewController ()
+
+@property (assign, nonatomic) BOOL animating;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutlet UIPageControl *pageControl;
 
 @end
 
 @implementation WUUserGuideViewController
 
-@synthesize scrollView;
+@synthesize scrollView, animating, pageControl;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -27,7 +27,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        [self initUserGuide];
+        self.view.backgroundColor = [UIColor blackColor];
     }
     return self;
 }
@@ -45,25 +45,37 @@
     // Dispose of any resources that can be recreated.
 }
 
-#define GUIDE_PICTURE_NUMBER 8
-
 - (void)initUserGuide
 {
-    height = [[UIScreen mainScreen] bounds].size.height;
-    width = [[UIScreen mainScreen] bounds].size.width;
+    float height = [[UIScreen mainScreen] bounds].size.height;
+    float width = [[UIScreen mainScreen] bounds].size.width;
+    float widthShrink = 40;
+    float heightShrink = 60;
     
-    filePrefix = @"user_guide_%d.png";
+    NSArray *guidePictures = [NSArray arrayWithObjects:@"ug_start", @"ug_1", @"ug_2", @"ug_3", @"ug_4", @"ug_5", @"ug_6", @"ug_go", nil];
+    if (height > 480) {
+        heightShrink = 71;
+        guidePictures = [NSArray arrayWithObjects:@"ug_start", @"ug_1-568h@2x", @"ug_2-568h@2x", @"ug_3-568h@2x", @"ug_4-568h@2x", @"ug_5-568h@2x", @"ug_6-568h@2x", @"ug_go", nil];
+    }
     
-    [scrollView setContentSize:CGSizeMake(320*GUIDE_PICTURE_NUMBER,0)];
+    pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(100, height-20, 120, 20)];
+    pageControl.numberOfPages = [guidePictures count];
+    pageControl.currentPage = 0;
+    pageControl.currentPageIndicatorTintColor = [UIColor orangeColor];
+    
+    scrollView = [[UIScrollView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    [scrollView setContentSize:CGSizeMake(width*[guidePictures count],0)];
     [scrollView setBackgroundColor:[UIColor clearColor]];
     [scrollView setPagingEnabled:YES];
     
-    for (int i = 0; i<GUIDE_PICTURE_NUMBER; i++) {
-        [self addGuidePictureAtIndex:i];
-    }    
+    for (int i = 0; i<[guidePictures count]; i++) {
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(width*i+widthShrink/2, heightShrink/2, width-widthShrink, height-heightShrink)];
+        [imageView setImage: [UIImage imageNamed:[guidePictures objectAtIndex:i]]];
+        [scrollView addSubview:imageView];
+    }
     
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn.frame = CGRectMake(320*(GUIDE_PICTURE_NUMBER-1)+100, 300, 120, 40);
+    btn.frame = CGRectMake(width*([guidePictures count]-1)+100, 300, 120, 40);
     [btn setBackgroundColor:[UIColor orangeColor]];
     [btn setTitle:@"Start" forState:UIControlStateNormal];
     [btn setTitle:@"GO!" forState:UIControlStateHighlighted];
@@ -72,36 +84,128 @@
     [btn addTarget:self action:@selector(userGuideFinishButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
     [scrollView addSubview:btn];
+    scrollView.delegate = self;
     
+    [self.view addSubview:scrollView];
+    [self.view addSubview:pageControl];
 }
 
-- (void)addGuidePictureAtIndex:(int)index
+-(void)scrollViewDidScroll:(UIScrollView *)scroll
 {
-    NSLog(@"add picture at index %d..", index);
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(width*index+20, 30, width-40, height-60)];
-    NSString *imageName = [NSString stringWithFormat:filePrefix, index];
-    if (index == 0) {
-        imageName = @"user_guide_start.png";
-    } else if ( index == GUIDE_PICTURE_NUMBER-1) {
-        imageName = @"user_guide_go.png";
-    }
-    [imageView  setImage: [UIImage imageNamed:imageName]];
-    [scrollView addSubview:imageView];
+    CGFloat pageWidth = self.view.frame.size.width;
+    int page = floor((scroll.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    pageControl.currentPage = page;
 }
+
 
 - (void)userGuideFinishButtonPressed
 {
-    if (self.delegate) {
-        [self.delegate helpViewControllerDidFinished:self];
-    } else {
-        WUMainViewController *mainViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MainViewController"];
-        [self presentViewController:mainViewController animated:YES completion:nil];
+    [self hideGuide];
+}
+
+- (CGRect)onscreenFrame
+{
+    return [UIScreen mainScreen].applicationFrame;
+}
+
+- (CGRect)offscreenFrame
+{
+  	CGRect frame = [self onscreenFrame];
+	switch ([UIApplication sharedApplication].statusBarOrientation)
+    {
+		case UIInterfaceOrientationPortrait:
+			frame.origin.y = frame.size.height;
+			break;
+		case UIInterfaceOrientationPortraitUpsideDown:
+			frame.origin.y = -frame.size.height;
+			break;
+		case UIInterfaceOrientationLandscapeLeft:
+			frame.origin.x = frame.size.width;
+			break;
+		case UIInterfaceOrientationLandscapeRight:
+			frame.origin.x = -frame.size.width;
+			break;
+	}
+	return frame;  
+}
+
+- (UIWindow *)mainWindow
+{
+    UIApplication *app = [UIApplication sharedApplication];
+    if ([app.delegate respondsToSelector:@selector(window)])
+    {
+        return [app.delegate window];
+    }
+    else
+    {
+        return [app keyWindow];
+    }
+}
+
+- (void)guideShown
+{
+    animating = NO;
+}
+
+- (void)guideHidden
+{
+	animating = NO;
+	[[[WUUserGuideViewController sharedGuide] view] removeFromSuperview];
+}
+
+- (void)showGuide
+{
+	if (!animating && self.view.superview == nil)
+	{
+		[WUUserGuideViewController sharedGuide].view.frame = [self offscreenFrame];
+		[[self mainWindow] addSubview:[WUUserGuideViewController sharedGuide].view];
+		
+		animating = YES;
+		[UIView beginAnimations:nil context:nil];
+		[UIView setAnimationDuration:0.4];
+		[UIView setAnimationDelegate:self];
+		[UIView setAnimationDidStopSelector:@selector(guideShown)];
+		[WUUserGuideViewController sharedGuide].view.frame = [self onscreenFrame];
+		[UIView commitAnimations];
+	}
+    
+}
+
+- (void)hideGuide
+{
+	if (!animating && self.view.superview != nil)
+	{
+		animating = YES;
+		[UIView beginAnimations:nil context:nil];
+		[UIView setAnimationDuration:0.4];
+		[UIView setAnimationDelegate:self];
+		[UIView setAnimationDidStopSelector:@selector(guideHidden)];
+		[WUUserGuideViewController sharedGuide].view.frame = [self offscreenFrame];
+		[UIView commitAnimations];
+	}
+}
+
++ (void)show
+{
+    [[WUUserGuideViewController sharedGuide].scrollView setContentOffset:CGPointMake(0.f, 0.f)];
+    [[WUUserGuideViewController sharedGuide] showGuide];
+}
+
++ (void)hide
+{
+    [[WUUserGuideViewController sharedGuide] hideGuide];
+}
+
++ (WUUserGuideViewController *)sharedGuide
+{
+    @synchronized(self)
+    {
+        static WUUserGuideViewController *sharedGuide = nil;
+        if (sharedGuide == nil)
+            sharedGuide = [[self alloc] init];
+        return sharedGuide;
     }
 }
 
 
-- (void)viewDidUnload {
-    [self setScrollView:nil];
-    [super viewDidUnload];
-}
 @end
