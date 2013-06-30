@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A1AEDDC1780B7C900B940E8 /* guideviewdelete.png in Resources */ = {isa = PBXBuildFile; fileRef = 1A1AEDDB1780B7C900B940E8 /* guideviewdelete.png */; };
 		1AD3BBC4173AD8DB00A247AB /* WUUserGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AD3BBC3173AD8DB00A247AB /* WUUserGuideViewController.m */; };
 		1AD3BBEB173B83F000A247AB /* ug_6.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AD3BBE3173B83F000A247AB /* ug_6.png */; };
 		1AD3BBEC173B83F000A247AB /* ug_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AD3BBE4173B83F000A247AB /* ug_5.png */; };
@@ -44,6 +45,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1A1AEDDB1780B7C900B940E8 /* guideviewdelete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = guideviewdelete.png; sourceTree = "<group>"; };
 		1AD3BBC2173AD8DB00A247AB /* WUUserGuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WUUserGuideViewController.h; sourceTree = "<group>"; };
 		1AD3BBC3173AD8DB00A247AB /* WUUserGuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WUUserGuideViewController.m; sourceTree = "<group>"; };
 		1AD3BBE3173B83F000A247AB /* ug_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ug_6.png; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				1AD3BBF3173B856C00A247AB /* Default.png */,
 				1AD3BBE3173B83F000A247AB /* ug_6.png */,
 				1AD3BBE4173B83F000A247AB /* ug_5.png */,
+				1A1AEDDB1780B7C900B940E8 /* guideviewdelete.png */,
 				1AD3BBE5173B83F000A247AB /* ug_go.png */,
 				1AD3BBE6173B83F000A247AB /* ug_start.png */,
 				1AD3BBE7173B83F000A247AB /* ug_4.png */,
@@ -264,6 +267,7 @@
 				1AD3BC06173CD72900A247AB /* ug_3-568h@2x.png in Resources */,
 				1AD3BC07173CD72900A247AB /* ug_2-568h@2x.png in Resources */,
 				1AD3BC08173CD72900A247AB /* ug_1-568h@2x.png in Resources */,
+				1A1AEDDC1780B7C900B940E8 /* guideviewdelete.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

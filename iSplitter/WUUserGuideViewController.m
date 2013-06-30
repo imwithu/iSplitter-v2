@@ -69,13 +69,23 @@
     [scrollView setPagingEnabled:YES];
     [scrollView setShowsHorizontalScrollIndicator:NO]; //隐藏水平滚动条
     
+    UIImageView *imageView = nil;
+    UIButton *btn = nil;
     for (int i = 0; i<[guidePictures count]; i++) {
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(width*i+widthShrink/2, heightShrink/2, width-widthShrink, height-heightShrink)];
+        imageView = [[UIImageView alloc] initWithFrame:CGRectMake(width*i+widthShrink/2, heightShrink/2, width-widthShrink, height-heightShrink)];
         [imageView setImage: [UIImage imageNamed:[guidePictures objectAtIndex:i]]];
         [scrollView addSubview:imageView];
+        if (i<[guidePictures count]-1) {
+            btn = [UIButton buttonWithType:UIButtonTypeCustom];
+            btn.frame = CGRectMake(width*i+270, 35, 25, 25);
+            [btn setImage:[UIImage imageNamed:@"guideviewdelete.png"] forState:UIControlStateNormal];
+            [btn setBackgroundColor:[UIColor clearColor]];
+            [btn addTarget:self action:@selector(userGuideFinishButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+            [scrollView addSubview:btn];
+        }
     }
     
-    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.frame = CGRectMake(width*([guidePictures count]-1)+100, 300, 120, 40);
     [btn setBackgroundColor:[UIColor orangeColor]];
     [btn setTitle:@"Start" forState:UIControlStateNormal];
